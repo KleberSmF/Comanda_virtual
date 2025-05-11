@@ -1,14 +1,12 @@
-const fs = require('fs');
-const path = require('path');
-const caminhoArquivo = path.resolve(__dirname, 'teste.txt');
+
 
 function validateAccess(accessToken) {
-    fetch("/salvar-dados", {
+    fetch("http://localhost:3000/validate-token", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ entrada: valor })
+      body: JSON.stringify({ login: accessToken })
     })
     .then(response => response.json())
     .then(data => console.log("Resposta do servidor:", data))
@@ -22,8 +20,12 @@ function accessValidation(){
     if (accessToken.trim() === "") {
         alert("Insira o token para realizar o acesso.");
     } else {
-        validateAccess(accessToken);
+      //validateAccess(accessToken);
+      if(accessToken === "3333"){
+        alert("Token correto! Boa champ!");
+        window.location.href = "telaPedidos.html";
+      } else {
+        alert("Token incorreto!");
+      }
     }
 }
-
-  
