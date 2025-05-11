@@ -9,7 +9,16 @@ function validateAccess(accessToken) {
       body: JSON.stringify({ login: accessToken })
     })
     .then(response => response.json())
-    .then(data => console.log("Resposta do servidor:", data))
+    .then(data => {
+      let resultado = document.getElementById("resultado");
+      resultado.textContent = data.mensagem || data.erro;
+      resultado.style.color = data.erro ? "red" : "green";
+
+      // Se o token for válido, redireciona para index.html
+      if (data.mensagem === "Token válido!") {
+          window.location.href = "index.html";
+      }
+    })
     .catch(error => console.error("Erro ao salvar:", error));
 }
 
@@ -20,8 +29,9 @@ function accessValidation(){
     if (accessToken.trim() === "") {
         alert("Insira o token para realizar o acesso.");
     } else {
+      // #########################
       //validateAccess(accessToken);
-      if(accessToken === "3333"){
+      if(accessToken === "3333" || "6060" || "3030"){
         alert("Token correto! Boa champ!");
         window.location.href = "telaPedidos.html";
       } else {
@@ -29,3 +39,4 @@ function accessValidation(){
       }
     }
 }
+
