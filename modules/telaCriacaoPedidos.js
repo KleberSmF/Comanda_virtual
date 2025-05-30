@@ -3,7 +3,7 @@ app.use(express.json());
 
 // Rota para criar um novo pedido
 app.post('/pedidos', async (req, res) => {
-    const { cliente, itens, status } = req.body;
+    const { cliente, itens, PedidoStatus } = req.body;
 
     try {
         const query = `
@@ -14,7 +14,7 @@ app.post('/pedidos', async (req, res) => {
         const request = new sql.Request();
         request.input('cliente', sql.VarChar, cliente);
         request.input('itens', sql.VarChar, itens);
-        request.input('status', sql.VarChar, status);
+        request.input('PedidoStatus', sql.VarChar, PedidoStatus);
 
         await request.query(query);
         res.send('Pedido criado com sucesso!');

@@ -1,20 +1,9 @@
-const express = require("express");
-const sql = require("mssql");
-
+const express = require('express');
 const app = express();
-app.use(express.json());
+const pedidosRouter = require('./routes/pedidos');
 
-// Configuração do SQL Server
-const config = {
-    user: "seu_usuario",
-    password: "sua_senha",
-    server: "localhost", // Ou o nome do servidor
-    database: "meuBanco",
-    options: {
-        encrypt: true, // Se necessário
-        trustServerCertificate: true
-    }
-};
+app.use(express.json());
+app.use('/pedidos', pedidosRouter);
 
 // Rota para validar o token (falta verificar se esta funcionando)
 app.post("/validate-token", async (req, res) => {
@@ -41,5 +30,6 @@ app.post("/validate-token", async (req, res) => {
     }
 });
 
-app.listen(3000, () => console.log("Servidor rodando na porta 3000"));
-
+app.listen(3000, () => {
+    console.log('Servidor rodando em http://localhost:3000');
+});
