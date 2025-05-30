@@ -1,7 +1,7 @@
 // Rota para editar pedidos
 app.put('/pedidos/:id', async (req, res) => {
     const { id } = req.params;
-    const { cliente, itens, status } = req.body;
+    const { cliente, itens, PedidoStatus } = req.body;
 
     try {
         const query = `
@@ -14,7 +14,7 @@ app.put('/pedidos/:id', async (req, res) => {
         request.input('id', sql.Int, id);
         request.input('cliente', sql.VarChar, cliente);
         request.input('itens', sql.VarChar, itens);
-        request.input('status', sql.VarChar, status);
+        request.input('PedidoStatus', sql.VarChar, PedidoStatus);
 
         await request.query(query);
         res.send('Pedido atualizado com sucesso!');
