@@ -1,55 +1,29 @@
-const { readData, writeData } = require('./storageService');
+const Comanda = require('../models/Comanda');
 
-function criarComanda(novaComanda) {
-  const data = readData();
-  novaComanda.id = Date.now().toString();
-  novaComanda.dataAbertura = new Date().toISOString();
-  novaComanda.status = 'aberta';
-  data.comandas.push(novaComanda);
-  writeData(data);
-  return novaComanda;
-}
+exports.criarComanda = async (comandaData) => {
+  return await Comanda.create(comandaData);
+};
 
-function buscarComandaPorId(id) {
-  const data = readData();
-  return data.comandas.find(c => c.id === id);
-}
+exports.buscarComandaPorId = async (id) => {
+  return await Comanda.findById(id);
+};
 
-function editarComanda(id, comandaAtualizada) {
-  const data = readData();
-  const index = data.comandas.findIndex(c => c.id === id);
-  if (index !== -1) {
-    data.comandas[index] = { ...data.comandas[index], ...comandaAtualizada };
-    writeData(data);
-    return data.comandas[index];
-  }
-  return null;
-}
+exports.editarComanda = async (id, comandaData) => {
+  return await Comanda.update(id, comandaData);
+};
 
-function fecharComanda(id) {
-  const data = readData();
-  const index = data.comandas.findIndex(c => c.id === id);
-  if (index !== -1) {
-    const comanda = data.comandas[index];
-    comanda.status = 'fechada';
-    comanda.dataFechamento = new Date().toISOString();
-    data.historico.push(comanda);
-    data.comandas.splice(index, 1);
-    writeData(data);
-    return comanda;
-  }
-  return null;
-}
+exports.fecharComanda = async (id) => {
+  return await Comanda.close(id);
+};
 
-function listarHistorico() {
-  const data = readData();
-  return data.historico;
-}
+exports.listarComandasAtivas = async () => {
+  return await Comanda.findAllActive();
+};
 
-module.exports = {
-  criarComanda,
-  buscarComandaPorId,
-  editarComanda,
-  fecharComanda,
-  listarHistorico
+exports.finalizarComanda = async (id) => {
+  return await Comanda.close(id);
+};
+
+exports.buscarComandasPorPeriodo = async (inicio, fim) => {
+  return await Comanda.findByPeriod(inicio, fim);
 };
